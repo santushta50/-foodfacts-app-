@@ -16,39 +16,129 @@ body {
 }
 
 #root {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
 }
 
+main {
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* NavBar Styles */
+.navbar {
+  background-color: #2c3e50;
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.nav-logo {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-links a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-links a.active {
+  background-color: #3498db;
+  font-weight: 600;
+}
+
+.badge {
+  background-color: #e74c3c;
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+/* Page Container */
+.page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Headings */
 h1 {
   font-size: 2.5rem;
-  margin: 30px 0;
+  margin: 20px 0;
   color: #2c3e50;
   text-align: center;
   font-weight: 600;
 }
 
 h2 {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
+  margin: 20px 0;
+  color: #2c3e50;
+}
+
+h3 {
+  font-size: 1.3rem;
   margin: 15px 0 10px 0;
   color: #34495e;
 }
 
 p {
-  margin: 10px 0;
   color: #555;
-  text-align: center;
+  margin: 10px 0;
 }
 
-form {
+.loading {
+  text-align: center;
+  color: #3498db;
+  font-weight: 500;
+  margin: 20px 0;
+}
+
+/* Search Form */
+.search-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 30px 0;
+}
+
+.search-input-wrap {
   display: flex;
   gap: 10px;
-  margin: 30px auto;
-  max-width: 500px;
   flex-wrap: wrap;
-  justify-content: center;
 }
 
 input {
@@ -90,6 +180,35 @@ button:active {
   transform: translateY(0);
 }
 
+.validation-error {
+  color: #e74c3c;
+  font-size: 0.9rem;
+  margin-top: 8px;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+  padding: 15px;
+  border-radius: 6px;
+  margin: 20px 0;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.error-message span {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.error-message p {
+  margin: 0;
+  text-align: left;
+}
+
+/* Food List & Cards */
 .food-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -145,61 +264,238 @@ button:active {
   text-align: left;
 }
 
-/* Empty state message */
-.food-list + p {
-  text-align: center;
+/* Detail Page */
+.detail-page {
+  background: white;
+  border-radius: 8px;
+  padding: 30px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.back-button {
+  margin-bottom: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.detail-header {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 40px;
+  align-items: flex-start;
+}
+
+.detail-image {
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.detail-header h1 {
+  margin: 0 0 15px 0;
+  text-align: left;
+  font-size: 2rem;
+}
+
+.detail-brand {
   color: #7f8c8d;
   font-size: 1.1rem;
+  text-align: left;
+}
+
+.nutrition-table {
+  margin: 40px 0;
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.nutrition-table h3 {
+  margin-top: 0;
+  color: #2c3e50;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 10px;
+}
+
+.nutriment-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.nutriment-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background: white;
+  border-radius: 4px;
+  border-left: 3px solid #3498db;
+}
+
+.nutriment-label {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.nutriment-value {
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+.save-button {
   margin-top: 30px;
+  width: 100%;
+  padding: 15px;
+  font-size: 1.1rem;
+  background-color: #27ae60;
 }
 
-/* Loading state */
-p:contains("Loading") {
-  text-align: center;
-  color: #3498db;
-  font-weight: 500;
-  margin: 20px 0;
+.save-button:hover {
+  background-color: #229954;
 }
 
-/* Responsive design */
+/* Saved Items Page */
+.saved-item {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.saved-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.saved-item img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 15px;
+}
+
+.saved-item h3 {
+  margin: 15px 0 10px 0;
+}
+
+.saved-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.view-button {
+  flex: 1;
+  background-color: #3498db;
+}
+
+.view-button:hover {
+  background-color: #2980b9;
+}
+
+.remove-button {
+  flex: 1;
+  background-color: #e74c3c;
+}
+
+.remove-button:hover {
+  background-color: #c0392b;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
-  #root {
+  main {
     padding: 15px;
   }
 
   h1 {
-    font-size: 2rem;
-    margin: 20px 0;
+    font-size: 1.8rem;
   }
 
-  form {
-    margin: 20px auto;
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  .navbar {
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+  }
+
+  .nav-links {
+    gap: 20px;
+  }
+
+  .search-input-wrap {
+    flex-direction: column;
   }
 
   input {
     min-width: 100%;
   }
 
+  button {
+    width: 100%;
+  }
+
   .food-list {
     grid-template-columns: 1fr;
     gap: 15px;
+  }
+
+  .detail-header {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .detail-image {
+    width: 100%;
+    height: auto;
+  }
+
+  .nutriment-list {
+    grid-template-columns: 1fr;
+  }
+
+  .saved-actions {
+    flex-direction: column;
   }
 }
 
 @media (max-width: 480px) {
   h1 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
 
   h2 {
     font-size: 1.1rem;
   }
 
-  form {
-    flex-direction: column;
+  .navbar {
+    padding: 12px 15px;
   }
 
-  button {
-    width: 100%;
+  .nav-logo {
+    font-size: 1.2rem;
+  }
+
+  .nav-links {
+    gap: 15px;
+    font-size: 0.9rem;
+  }
+
+  .detail-page {
+    padding: 15px;
+  }
+
+  .food-card {
+    padding: 15px;
   }
 }
