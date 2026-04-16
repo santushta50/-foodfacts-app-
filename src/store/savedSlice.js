@@ -1,9 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+const loadFromStorage = () => {
+  try {
+    const stored = localStorage.getItem('foodfacts-saved')
+    return stored ? JSON.parse(stored) : []
+  } catch {
+    return []
+  }
+}
+
 const savedSlice = createSlice({
   name: 'saved',
   initialState: {
-    items: []
+    items: loadFromStorage()
   },
   reducers: {
     addItem: (state, action) => {

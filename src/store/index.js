@@ -7,4 +7,16 @@ const store = configureStore({
   }
 })
 
+store.subscribe(() => {
+  try {
+    const state = store.getState()
+    localStorage.setItem(
+      'foodfacts-saved',
+      JSON.stringify(state.saved.items)
+    )
+  } catch {
+    // storage might be full or unavailable — fail silently
+  }
+})
+
 export default store
