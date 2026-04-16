@@ -1,6 +1,16 @@
+import Container from '@mui/material/Container'
+import Grid from '@mui/material/Grid'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import CardMedia from '@mui/material/CardMedia'
+import CardActions from '@mui/material/CardActions'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { removeItem } from '../store/savedSlice'
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 function SavedPage() {
   const dispatch = useDispatch()
@@ -10,42 +20,66 @@ function SavedPage() {
 
   if (savedItems.length === 0) {
     return (
-      <div className="page">
-        <h2>Saved Items</h2>
-        <p>You haven't saved anything yet. Search for a food and save it from the detail page.</p>
-      </div>
+      <Container maxWidth="lg" sx={{ py: 4 }}>
+        <Typography variant="h4" gutterBottom fontWeight={800}>
+          Saved Items
+        </Typography>
+        <Typography color="text.secondary">
+          You haven't saved anything yet. Search for a food and save it from the detail page.
+        </Typography>
+      </Container>
     )
   }
 
   return (
-    <div className="page">
-      <h2>Saved Items ({savedItems.length})</h2>
-      <div className="food-list">
+    <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Typography variant="h4" gutterBottom fontWeight={800}>
+        Saved Items ({savedItems.length})
+      </Typography>
+
+      <Grid container spacing={3} sx={{ mt: 2 }}>
         {savedItems.map((product) => (
-          <div key={product.id} className="saved-item">
-            {product.image_small_url && (
-              <img src={product.image_small_url} alt={product.product_name} />
-            )}
-            <h3>{product.product_name}</h3>
-            {product.brands && <p className="brand">{product.brands}</p>}
-            <div className="saved-actions">
-              <button
-                className="view-button"
-                onClick={() => navigate(`/product/${product.id}`, { state: { product } })}
-              >
-                View Details
-              </button>
-              <button
-                className="remove-button"
-                onClick={() => dispatch(removeItem(product.id))}
-              >
-                Remove
-              </button>
-            </div>
-          </div>
+          <Grid item xs={12} sm={6} md={4} key={product.id}>
+            <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+              {product.image_small_url && (
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image={product.image_small_url}
+                  alt={product.product_name}
+                  sx={{ objectFit: 'contain', p: 1 }}
+                />
+              )}
+              <CardContent sx={{ flexGrow: 1 }}>
+                <Typography variant="h6" gutterBottom>
+                  {product.product_name || 'Unknown Product'}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {product.brands || 'Unknown Brand'}
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button
+                  size="small"
+                  startIcon={<VisibilityIcon />}
+                  onClick={() => navigate(`/product/${product.id}`, { state: { product } })}
+                >
+                  View
+                </Button>
+                <Button
+                  size="small"
+                  color="error"
+                  startIcon={<DeleteIcon />}
+                  onClick={() => dispatch(removeItem(product.id))}
+                >
+                  Remove
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
         ))}
-      </div>
-    </div>
+      </Grid>
+    </Container>
   )
 }
 
