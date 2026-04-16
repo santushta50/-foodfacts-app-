@@ -1,56 +1,33 @@
-import { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import axios from 'axios'
-import ErrorMessage from '../components/ErrorMessage'
+import { useSelector, useDispatch } from 'react-redux'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { addItem, removeItem } from '../store/savedSlice'
 
-function DetailPage({ saved, dispatch }) {
-  const { barcode } = useParams()
+function DetailPage() {
+  const dispatch = useDispatch()
+  const savedItems = useSelector(state => state.saved.items)
+
+  const location = useLocation()
   const navigate = useNavigate()
+  const product = location.state?.product
 
-  const [product, setProduct] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-
-  useEffect(() => {
-    let cancelled = false
-
-    const fetchProduct = async () => {
-      try {
-        const response = await axios.get(
-          `https://world.openfoodfacts.org/api/v0/product/${barcode}.json`
-        )
-        if (!cancelled) {
-          setProduct(response.data.product)
-          setLoading(false)
-        }
-      } catch (err) {
-        if (!cancelled) {
-          setError('Could not load product details.')
-          setLoading(false)
-        }
-      }
-    }
-
-    fetchProduct()
-
-    return () => {
-      cancelled = true
-    }
-  }, [barcode])
-
-  const isSaved = saved.some(p => p.code === barcode)
+  const isSaved = savedItems.some(p => p.id === product?.id)
 
   const handleSaveToggle = () => {
     if (isSaved) {
-      dispatch({ type: 'REMOVE', code: barcode })
+      dispatch(removeItem(product.id))
     } else {
-      dispatch({ type: 'ADD', product: product })
+      dispatch(addItem(product))
     }
   }
 
-  if (loading) return <div className="page"><p>Loading product details...</p></div>
-  if (error) return <div className="page"><ErrorMessage message={error} /></div>
-  if (!product) return <div className="page"><p>Product not found.</p></div>
+  if (!product) {
+    return (
+      <div className="page">
+        <p>Product not found.</p>
+        <button onClick={() => navigate('/')}>← Back to Search</button>
+      </div>
+    )
+  }
 
   const { product_name, brands, nutriments, image_small_url } = product
 

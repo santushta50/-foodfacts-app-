@@ -1,9 +1,14 @@
+import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { removeItem } from '../store/savedSlice'
 
-function SavedPage({ saved, dispatch }) {
+function SavedPage() {
+  const dispatch = useDispatch()
+  const savedItems = useSelector(state => state.saved.items)
+
   const navigate = useNavigate()
 
-  if (saved.length === 0) {
+  if (savedItems.length === 0) {
     return (
       <div className="page">
         <h2>Saved Items</h2>
@@ -14,25 +19,25 @@ function SavedPage({ saved, dispatch }) {
 
   return (
     <div className="page">
-      <h2>Saved Items ({saved.length})</h2>
+      <h2>Saved Items ({savedItems.length})</h2>
       <div className="food-list">
-        {saved.map((product) => (
-          <div key={product.code} className="saved-item">
+        {savedItems.map((product) => (
+          <div key={product.id} className="saved-item">
             {product.image_small_url && (
               <img src={product.image_small_url} alt={product.product_name} />
             )}
             <h3>{product.product_name}</h3>
             {product.brands && <p className="brand">{product.brands}</p>}
             <div className="saved-actions">
-              <button 
+              <button
                 className="view-button"
-                onClick={() => navigate(`/product/${product.code}`)}
+                onClick={() => navigate(`/product/${product.id}`, { state: { product } })}
               >
                 View Details
               </button>
-              <button 
+              <button
                 className="remove-button"
-                onClick={() => dispatch({ type: 'REMOVE', code: product.code })}
+                onClick={() => dispatch(removeItem(product.id))}
               >
                 Remove
               </button>
