@@ -6,7 +6,6 @@ import Box from '@mui/material/Box'
 import useFoodSearch from '../hooks/useFoodSearch'
 import SearchBar from '../components/SearchBar'
 import FoodCard from '../components/FoodCard'
-import ClassFoodCard from '../components/ClassFoodCard'
 import ErrorMessage from '../components/ErrorMessage'
 
 function HomePage() {
@@ -38,11 +37,6 @@ function HomePage() {
       )}
 
       <Grid container spacing={3} sx={{ mt: 2 }}>
-        {results.length > 0 && (
-          <Grid item xs={12} sm={6} md={4}>
-            <ClassFoodCard product={results[0]} />
-          </Grid>
-        )}
         {results.map(product => (
           <Grid item xs={12} sm={6} md={4} key={product.id}>
             <FoodCard product={product} />

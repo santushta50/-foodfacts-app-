@@ -47,6 +47,3 @@ function FoodCard({ product }) {
 }
 
 export default FoodCard
-}
-
-export default FoodCard
